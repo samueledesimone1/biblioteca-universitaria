@@ -1,0 +1,39 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Catalogo Libri{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Catalogo Libri</h1>
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Cerca per titolo, autore o categoria..." value="{{ query }}">
+        <button class="btn btn-primary" type="submit">Cerca</button>
+    </div>
+</form>
+<div class="row">
+    {% for libro in libri %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+    <a href="{% url 'dettaglio_libro' libro.id %}">{{ libro.titolo }}</a>
+</h5>
+                <p class="card-text">
+                    <strong>ISBN:</strong> {{ libro.isbn }}<br>
+                    <strong>Anno:</strong> {{ libro.anno_pubblicazione }}<br>
+                    <strong>Categoria:</strong> {{ libro.categoria }}<br>
+                    <strong>Autori:</strong>
+                    {% for autore in libro.autori.all %}
+                        {{ autore.nome }} {{ autore.cognome }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Nessun autore
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Nessun libro presente nel catalogo.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}{{ libro.titolo }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'catalogo_libri' %}" class="btn btn-secondary mb-3">&larr; Torna al catalogo</a>
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<h1>{{ libro.titolo }}</h1>
+<p>
+    <strong>ISBN:</strong> {{ libro.isbn }}<br>
+    <strong>Anno di pubblicazione:</strong> {{ libro.anno_pubblicazione }}<br>
+    <strong>Categoria:</strong> {{ libro.categoria }}<br>
+    <strong>Autori:</strong>
+    {% for autore in libro.autori.all %}
+        {{ autore.nome }} {{ autore.cognome }}{% if not forloop.last %}, {% endif %}
+    {% empty %}
+        Nessun autore
+    {% endfor %}
+</p>
+
+<h3 class="mt-4">Copie disponibili</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Numero inventario</th>
+            <th>Stato</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for copia in libro.copie.all %}
+        <tr>
+            <td>{{ copia.numero_inventario }}</td>
+            <td>{{ copia.stato }}</td>
+            <td>
+                {% if copia.stato == 'disponibile' %}
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'prestito_libro' copia.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-primary">Prendi in prestito</button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-sm btn-outline-primary">Accedi per prendere in prestito</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">Nessuna copia registrata per questo libro.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

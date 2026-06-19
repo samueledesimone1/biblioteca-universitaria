@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Biblioteca Universitaria{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'catalogo_libri' %}">Biblioteca Universitaria</a>
+           <div class="navbar-nav d-flex flex-row gap-3">
+    <a class="nav-link" href="{% url 'catalogo_libri' %}">Catalogo</a>
+    {% if user.is_authenticated %}
+       <a class="nav-link" href="{% url 'miei_prestiti' %}">I miei prestiti</a>
+<span class="nav-link">Ciao, {{ user.first_name }}</span>
+        <a class="nav-link" href="{% url 'logout' %}">Esci</a>
+    {% else %}
+        <a class="nav-link" href="{% url 'login' %}">Accedi</a>
+        <a class="nav-link" href="{% url 'registrazione' %}">Registrati</a>
+    {% endif %}
+</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
