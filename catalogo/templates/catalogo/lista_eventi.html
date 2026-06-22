@@ -1,0 +1,26 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Eventi{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Eventi</h1>
+
+<div class="row">
+    {% for evento in eventi %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ evento.titolo }}</h5>
+                <p class="card-text">
+                    <strong>Data:</strong> {{ evento.data|date:"d/m/Y H:i" }}<br>
+                    <strong>Luogo:</strong> {{ evento.luogo }}
+                </p>
+                <a href="{% url 'dettaglio_evento' evento.id %}" class="btn btn-primary btn-sm">Dettagli</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Nessun evento in programma.</p>
+    {% endfor %}
+</div>
+{% endblock %}

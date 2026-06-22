@@ -56,4 +56,41 @@
         {% endfor %}
     </tbody>
 </table>
+
+<h3 class="mt-4">Recensioni</h3>
+{% for recensione in recensioni %}
+<div class="card mb-2">
+    <div class="card-body">
+        <strong>{{ recensione.utente.first_name }} {{ recensione.utente.last_name }}</strong>
+        — Voto: {{ recensione.voto }}/5
+        <p class="mb-0">{{ recensione.commento }}</p>
+        <small class="text-muted">{{ recensione.data }}</small>
+    </div>
+</div>
+{% empty %}
+<p>Nessuna recensione ancora.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+<h5 class="mt-4">Lascia una recensione</h5>
+<form method="post" action="{% url 'aggiungi_recensione' libro.id %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Voto (1-5)</label>
+        <select name="voto" class="form-select" style="width: 100px;">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Commento</label>
+        <textarea name="commento" class="form-control" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Invia recensione</button>
+</form>
+{% endif %}
+
 {% endblock %}

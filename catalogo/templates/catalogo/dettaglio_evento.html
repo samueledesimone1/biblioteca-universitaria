@@ -1,0 +1,37 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}{{ evento.titolo }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'lista_eventi' %}" class="btn btn-secondary mb-3">&larr; Torna agli eventi</a>
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<h1>{{ evento.titolo }}</h1>
+<p>
+    <strong>Data:</strong> {{ evento.data|date:"d/m/Y H:i" }}<br>
+    <strong>Luogo:</strong> {{ evento.luogo }}<br>
+</p>
+<p>{{ evento.descrizione }}</p>
+
+{% if user.is_authenticated %}
+    {% if iscritto %}
+    <div class="alert alert-success">Sei iscritto a questo evento.</div>
+    <form method="post" action="{% url 'cancella_iscrizione' evento.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Cancella iscrizione</button>
+    </form>
+    {% else %}
+    <form method="post" action="{% url 'iscrizione_evento' evento.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Iscriviti</button>
+    </form>
+    {% endif %}
+{% else %}
+<a href="{% url 'login' %}" class="btn btn-outline-primary">Accedi per iscriverti</a>
+{% endif %}
+{% endblock %}

@@ -8,9 +8,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'catalogo_libri' %}">Biblioteca Universitaria</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Biblioteca Universitaria</a>
            <div class="navbar-nav d-flex flex-row gap-3">
     <a class="nav-link" href="{% url 'catalogo_libri' %}">Catalogo</a>
+<a class="nav-link" href="{% url 'lista_eventi' %}">Eventi</a>
     {% if user.is_authenticated %}
        <a class="nav-link" href="{% url 'miei_prestiti' %}">I miei prestiti</a>
 <span class="nav-link">Ciao, {{ user.first_name }}</span>
