@@ -113,7 +113,7 @@ def aggiungi_recensione(request, libro_id):
                 defaults={'voto': int(voto), 'commento': commento}
             )
             messages.success(request, 'Recensione salvata.')
-    return
+    return redirect('dettaglio_libro', libro_id=libro_id)
 
 def lista_eventi(request):
     eventi = Evento.objects.all().order_by('data')
